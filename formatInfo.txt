@@ -1,0 +1,9 @@
+Data to be arranged like so :
+SubjectID, Activity_Label, 128 readings/window, 561 features vector
+
+Data to be retrieved from these sources : 
+SubjectID - subject_test.txt 
+Activity_Label - activity_lables.txt 
+Activity_ID - y_test.txt
+128 readings/window - x_test.txt, 
+561 features vector - body_acc_x_test.txt, body_gyro_x_test.txt, total_acc_x_test.txt
