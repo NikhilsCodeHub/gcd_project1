@@ -1,16 +1,28 @@
 
 ## Load Activity Labels
-ylabels<- read.csv("UCI HAR Dataset/activity_labels.txt",  stringsAsFactors=FALSE, header=FALSE, sep=" ", col.names=c("ID", "Name"))
+ylabels<- read.csv("UCI HAR Dataset/activity_labels.txt",  stringsAsFactors=FALSE, header=FALSE, sep=" ", col.names=c("AcitivityID", "AcitivityName"))
 
 ## Load Activity IDs
-ytest<- read.csv("UCI HAR Dataset/test/y_test.txt", colClasses = "numeric", stringsAsFactors=FALSE, header=FALSE, col.names=c("ID"))
+ytest<- read.csv("UCI HAR Dataset/test/y_test.txt", colClasses = "numeric", stringsAsFactors=FALSE, header=FALSE, col.names=c("AcitivityID"))
+ytrain<- read.csv("UCI HAR Dataset/train/y_train.txt", colClasses = "numeric", stringsAsFactors=FALSE, header=FALSE, col.names=c("AcitivityID"))
+
+allData<- rbind(ytest, ytrain)
+
+rm(ytest)
+rm(ytrain)
 
 ## Join Activity Labels with ID to get one dataset with both ID and Labels
-allData<-left_join(ytest, ylabels, by=c("ID"="ID"))
-rm(ytest)
+allData<-left_join(allData, ylabels, by=c("AcitivityID"="AcitivityID"))
+
 
 ## Read test subjects file
-persondf<- read.csv("UCI HAR Dataset/test/subject_test.txt", sep=" ", colClasses = "numeric", col.names=c("personID"), header=FALSE)
+persondfTest<- read.csv("UCI HAR Dataset/test/subject_test.txt", sep=" ", colClasses = "numeric", col.names=c("personID"), header=FALSE)
+persondfTrain<- read.csv("UCI HAR Dataset/train/subject_train.txt", sep=" ", colClasses = "numeric", col.names=c("personID"), header=FALSE)
+
+persondf<- rbind(persondfTest, persondfTrain)
+
+rm(persondfTest)
+rm(persondfTrain)
 
 ## Combine all datasets on columns using cbind
 allData<-cbind(allData, persondf)
@@ -22,15 +34,23 @@ featurelabels<- read.csv("UCI HAR Dataset/features.txt", sep=" ", header=FALSE, 
 ##fieldwidths<-seq(16,16,length.out=561)
 
 ## Read Feature Data from X_test file
-featureDataTest<- read.fwf("UCI HAR Dataset/test/X_test.txt", widths=seq(16,16,length.out=561), colClasses = "numeric", header=FALSE, buffersize=100, col.names=featurelabels$FeatureName)
+featureDataTest<- read.fwf("UCI HAR Dataset/test/X_test.txt", widths=seq(16,16,length.out=561), colClasses = "numeric", header=FALSE, buffersize=500, col.names=featurelabels$FeatureName)
+featureDataTrain<- read.fwf("UCI HAR Dataset/train/X_train.txt", widths=seq(16,16,length.out=561), colClasses = "numeric", header=FALSE, buffersize=500, col.names=featurelabels$FeatureName)
 
+featureData<-rbind(featureDataTest, featureDataTrain)
 
-xtest<-cbind(allData, featureDataTest)
+rm(featureDataTest)
+rm(featureDataTrain)
+
+xtest<-cbind(allData, featureData)
+
+rm(featureData)
 
 xtest<-tbl_df(xtest)
 
 
-rm(featureDataTest)
+## Using select to isolate columns with mean and Standard Deviation, assuming we are looking for mean() only so removing meanFreq() .
+filteredData<-select(xtest, 1:3, contains("mean"), contains("std"), -contains("meanFreq"))
 
-## Read Feature Data from X_train file
-##featureDataTrain<- read.fwf("UCI HAR Dataset/test/X_train.txt", widths=seq(16,16,length.out=561), colClasses = "numeric", header=FALSE, buffersize=100, col.names=featurelabels$FeatureName)
+
+#
