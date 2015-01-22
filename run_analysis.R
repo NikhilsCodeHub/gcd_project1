@@ -52,5 +52,8 @@ xtest<-tbl_df(xtest)
 ## Using select to isolate columns with mean and Standard Deviation, assuming we are looking for mean() only so removing meanFreq() .
 filteredData<-select(xtest, 1:3, contains("mean"), contains("std"), -contains("meanFreq"))
 
+groupedData<-group_by(filteredData ,AcitivityName, personID)
+
+summaryData<-summarise_each(groupedData, funs(mean))
 
 #
