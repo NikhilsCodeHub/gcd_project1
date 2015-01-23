@@ -1,4 +1,6 @@
 
+library(dplyr)
+
 ## Load Activity Labels
 ylabels<- read.csv("UCI HAR Dataset/activity_labels.txt",  stringsAsFactors=FALSE, header=FALSE, sep=" ", col.names=c("AcitivityID", "AcitivityName"))
 
@@ -6,8 +8,10 @@ ylabels<- read.csv("UCI HAR Dataset/activity_labels.txt",  stringsAsFactors=FALS
 ytest<- read.csv("UCI HAR Dataset/test/y_test.txt", colClasses = "numeric", stringsAsFactors=FALSE, header=FALSE, col.names=c("AcitivityID"))
 ytrain<- read.csv("UCI HAR Dataset/train/y_train.txt", colClasses = "numeric", stringsAsFactors=FALSE, header=FALSE, col.names=c("AcitivityID"))
 
+## Combine the test and train activity files
 allData<- rbind(ytest, ytrain)
 
+## remove old datasets from memory as we nolonger need those.
 rm(ytest)
 rm(ytrain)
 
@@ -15,12 +19,14 @@ rm(ytrain)
 allData<-left_join(allData, ylabels, by=c("AcitivityID"="AcitivityID"))
 
 
-## Read test subjects file
+## Read test and train subjects file
 persondfTest<- read.csv("UCI HAR Dataset/test/subject_test.txt", sep=" ", colClasses = "numeric", col.names=c("personID"), header=FALSE)
 persondfTrain<- read.csv("UCI HAR Dataset/train/subject_train.txt", sep=" ", colClasses = "numeric", col.names=c("personID"), header=FALSE)
 
+## Combine datasets using rbind.
 persondf<- rbind(persondfTest, persondfTrain)
 
+## remove old datasets from memory as we nolonger need those.
 rm(persondfTest)
 rm(persondfTrain)
 
@@ -31,29 +37,41 @@ allData<-cbind(allData, persondf)
 featurelabels<- read.csv("UCI HAR Dataset/features.txt", sep=" ", header=FALSE, colClasses = c("numeric", "character"), strip.white=TRUE, stringsAsFactors=FALSE, col.names=c("ID", "FeatureName"))
 
 ## Generate sequence for reading fixed width files.
-##fieldwidths<-seq(16,16,length.out=561)
+### fieldwidths<-seq(16,16,length.out=561)
 
-## Read Feature Data from X_test file
+## Read Features Data from X_test and X_Train files
 featureDataTest<- read.fwf("UCI HAR Dataset/test/X_test.txt", widths=seq(16,16,length.out=561), colClasses = "numeric", header=FALSE, buffersize=500, col.names=featurelabels$FeatureName)
 featureDataTrain<- read.fwf("UCI HAR Dataset/train/X_train.txt", widths=seq(16,16,length.out=561), colClasses = "numeric", header=FALSE, buffersize=500, col.names=featurelabels$FeatureName)
 
+## rbind the above datasets to combine them.
 featureData<-rbind(featureDataTest, featureDataTrain)
 
+## Column bind feature dataset to the allData dataframe.
+allData<-cbind(allData, featureData)
+
+## remove old datasets from memory as we nolonger need those.
 rm(featureDataTest)
 rm(featureDataTrain)
-
-xtest<-cbind(allData, featureData)
-
 rm(featureData)
 
-xtest<-tbl_df(xtest)
-
+## Using dplyr package to convert allData to tbl_df.
+allData<-tbl_df(allData)
 
 ## Using select to isolate columns with mean and Standard Deviation, assuming we are looking for mean() only so removing meanFreq() .
-filteredData<-select(xtest, 1:3, contains("mean"), contains("std"), -contains("meanFreq"))
+filteredData<-select(allData, 2:3, contains("mean"), contains("std"), -contains("meanFreq"))
 
-groupedData<-group_by(filteredData ,AcitivityName, personID)
+## Chaining using dplyr operator
+filteredData %>% group_by(AcitivityName, personID) %>% 
+    summarise_each(funs(mean)) %>%
+        write.table(row.name=FALSE, file="summaryData.txt")
 
-summaryData<-summarise_each(groupedData, funs(mean))
 
-#
+### If the chainig doesnt work then we can use the below code to output the required file.
+##
+## groupedData<-group_by(filteredData ,AcitivityName, personID)
+## summaryData<-summarise_each(groupedData, funs(mean))
+## write.table(summaryData, row.name=FALSE, file="summaryData.txt")
+##
+###
+
+# End
