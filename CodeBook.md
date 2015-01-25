@@ -114,12 +114,12 @@ fBodyBodyGyroJerkMag.std..
 
 The Activity Labels are as follows :
 ====================================
-WALKING
-WALKING_UPSTAIRS
-WALKING_DOWNSTAIRS
-SITTING
-STANDING
-LAYING
+WALKING                           
+WALKING_UPSTAIRS                           
+WALKING_DOWNSTAIRS                           
+SITTING                           
+STANDING                           
+LAYING                           
 
 personID - Identifies the subject who performed the activity for each window sample. Its range is from 1 to 30. 
 
