@@ -7,39 +7,40 @@ The experiments have been carried out with a group of 30 volunteers within an ag
 The dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data.
 
 The dataset provided contains the following structure :
-UCI HAR Dataset
-   |--activity_labels.txt
-   |--features.txt
-   |--features_info.txt
-   |--README.txt
-   |--test
-       |--Inertial Signals
-               |------body_acc_x_test.txt
-               |------body_acc_y_test.txt
-               |------body_acc_z_test.txt
-               |------body_gyro_x_test.txt
-               |------body_gyro_y_test.txt
-               |------body_gyro_z_test.txt
-               |------total_acc_x_test.txt
-               |------total_acc_y_test.txt
-               |------total_acc_z_test.txt
-       |----subject_test.txt
-       |----X_test.txt
-       |----y_test.txt
-   |--train       
-        |--Inertial Signals
-               |------body_acc_x_train.txt
-               |------body_acc_y_train.txt
-               |------body_acc_z_train.txt
-               |------body_gyro_x_train.txt
-               |------body_gyro_y_train.txt
-               |------body_gyro_z_train.txt
-               |------total_acc_x_train.txt
-               |------total_acc_y_train.txt
-               |------total_acc_z_train.txt
-       |----subject_train.txt
-       |----X_train.txt
-       |----y_train.txt
+UCI HAR Dataset                              
+   |--activity_labels.txt                              
+   |--features.txt                              
+   |--features_info.txt                              
+   |--README.txt                              
+   |--test                              
+       |--Inertial Signals                              
+               |------body_acc_x_test.txt                              
+               |------body_acc_y_test.txt                              
+               |------body_acc_z_test.txt                              
+               |------body_gyro_x_test.txt                              
+               |------body_gyro_y_test.txt                              
+               |------body_gyro_z_test.txt                              
+               |------total_acc_x_test.txt                              
+               |------total_acc_y_test.txt                              
+               |------total_acc_z_test.txt                              
+       |----subject_test.txt                              
+       |----X_test.txt                              
+       |----y_test.txt                              
+   |--train                                     
+        |--Inertial Signals                              
+               |------body_acc_x_train.txt                              
+               |------body_acc_y_train.txt                              
+               |------body_acc_z_train.txt                              
+               |------body_gyro_x_train.txt                              
+               |------body_gyro_y_train.txt                              
+               |------body_gyro_z_train.txt                              
+               |------total_acc_x_train.txt                              
+               |------total_acc_y_train.txt                              
+               |------total_acc_z_train.txt                              
+       |----subject_train.txt                              
+       |----X_train.txt                              
+       |----y_train.txt                              
+
 
 
 For the purpose of our exersice we are going to use the subset of the data as shown below:
