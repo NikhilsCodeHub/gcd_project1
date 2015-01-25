@@ -60,8 +60,8 @@ UCI HAR Dataset
        |----y_train.txt                                                   
 
        
-The description of each file is as given below:
-===============================================
+The description of each file used in the analysis is as given below:
+===================================================================
 
 - 'README.md'
 
