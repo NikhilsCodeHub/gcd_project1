@@ -1,4 +1,5 @@
 
+## Load dplyr package
 library(dplyr)
 
 ## Load Activity Labels
@@ -43,10 +44,10 @@ featurelabels<- read.csv("UCI HAR Dataset/features.txt", sep=" ", header=FALSE, 
 featureDataTest<- read.fwf("UCI HAR Dataset/test/X_test.txt", widths=seq(16,16,length.out=561), colClasses = "numeric", header=FALSE, buffersize=500, col.names=featurelabels$FeatureName)
 featureDataTrain<- read.fwf("UCI HAR Dataset/train/X_train.txt", widths=seq(16,16,length.out=561), colClasses = "numeric", header=FALSE, buffersize=500, col.names=featurelabels$FeatureName)
 
-## rbind the above datasets to combine them.
+## rbind the above datasets to merge them.
 featureData<-rbind(featureDataTest, featureDataTrain)
 
-## Column bind feature dataset to the allData dataframe.
+## Column bind feature dataset to the allData dataframe to get Subject, Activity and 561 variable vector into one dataset.
 allData<-cbind(allData, featureData)
 
 ## remove old datasets from memory as we nolonger need those.
@@ -57,10 +58,12 @@ rm(featureData)
 ## Using dplyr package to convert allData to tbl_df.
 allData<-tbl_df(allData)
 
+## Dataset for Step 4
 ## Using select to isolate columns with mean and Standard Deviation, assuming we are looking for mean() only so removing meanFreq() .
 filteredData<-select(allData, 2:3, contains("mean"), contains("std"), -contains("meanFreq"))
 
-## Chaining using dplyr operator
+## Dataset for Step 5 written to file : summaryData.txt
+## Chaining using dplyr operator %>%
 filteredData %>% group_by(AcitivityName, personID) %>% 
     summarise_each(funs(mean)) %>%
         write.table(row.name=FALSE, file="summaryData.txt")
@@ -74,4 +77,4 @@ filteredData %>% group_by(AcitivityName, personID) %>%
 ##
 ###
 
-# End
+### End
