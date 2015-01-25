@@ -45,20 +45,20 @@ UCI HAR Dataset
 
 For the purpose of our exersice we are going to use the subset of the data as shown below:
 
-UCI HAR Dataset
-   |--activity_labels.txt
-   |--features.txt
-   |--features_info.txt
-   |--README.txt
-   |--test
-       |----subject_test.txt
-       |----X_test.txt
-       |----y_test.txt
-   |--train       
-       |----subject_train.txt
-       |----X_train.txt
-       |----y_train.txt
-       
+UCI HAR Dataset                              
+   |--activity_labels.txt                              
+   |--features.txt                              
+   |--features_info.txt                              
+   |--README.txt                              
+   |--test                              
+       |----subject_test.txt                              
+       |----X_test.txt                              
+       |----y_test.txt                              
+   |--train                                     
+       |----subject_train.txt                              
+       |----X_train.txt                              
+       |----y_train.txt                                                   
+
        
 The description of each file is as given below:
 ===============================================
